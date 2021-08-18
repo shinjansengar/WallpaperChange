@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace WallpaperChange
 {
@@ -7,11 +12,32 @@ namespace WallpaperChange
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("hey");
-            string photo = args[1];
-            Console.WriteLine(args[1]);
+            GetImageAsync();
+            
+            string photo = @"C:\Users\shinj\source\repos\WallpaperChange\WallpaperChange\bin\Debug\net5.0\output.jpg";
             DisplayPicture(photo);
         }
+
+        public static async Task GetImageAsync()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                var response = client.GetAsync("http://m.gettywallpapers.com/wp-content/uploads/2020/01/Joker-Wallpaper-For-PC.jpg").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var bitmap = await response.Content.ReadAsByteArrayAsync();
+               
+                    using (Image image = Image.FromStream(new MemoryStream(bitmap)))
+                    {
+                        image.Save("output.jpg", ImageFormat.Jpeg);  
+                    }
+                }
+
+            }
+
+
+        }
+
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
