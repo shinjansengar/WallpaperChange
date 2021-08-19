@@ -12,17 +12,17 @@ namespace WallpaperChange
     {
         static void Main(string[] args)
         {
-            GetImageAsync();
+            GetImageAsync(args[1]);
             
             string photo = @"C:\Users\shinj\source\repos\WallpaperChange\WallpaperChange\bin\Debug\net5.0\output.jpg";
             DisplayPicture(photo);
         }
 
-        public static async Task GetImageAsync()
+        public static async Task GetImageAsync(string imageAddress)
         {
             using (HttpClient client = new HttpClient())
             {
-                var response = client.GetAsync("http://m.gettywallpapers.com/wp-content/uploads/2020/01/Joker-Wallpaper-For-PC.jpg").Result;
+                var response = client.GetAsync(imageAddress).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     var bitmap = await response.Content.ReadAsByteArrayAsync();
