@@ -12,12 +12,19 @@ namespace WallpaperChange
     {
         static void Main(string[] args)
         {
-            GetImageAsync(args[1]);
+            for(int i=0; i < args.Length; i++)
+            {
+                Console.WriteLine($"Updating wallPaper from--->{args[i]}");
+            }
+           
+
+            GetImageAsync(args[0]).Wait();
             
-            string photo = @"C:\Users\shinj\source\repos\WallpaperChange\WallpaperChange\bin\Debug\net5.0\output.jpg";
+            //string photo = @"C:\Users\shinj\source\repos\WallpaperChange\WallpaperChange\bin\Debug\net5.0\output.jpg";
+            string photo = @"C:\Users\Public\Pictures\output.jpg";
             DisplayPicture(photo);
         }
-
+        
         public static async Task GetImageAsync(string imageAddress)
         {
             using (HttpClient client = new HttpClient())
@@ -29,7 +36,7 @@ namespace WallpaperChange
                
                     using (Image image = Image.FromStream(new MemoryStream(bitmap)))
                     {
-                        image.Save("output.jpg", ImageFormat.Jpeg);  
+                        image.Save("C:\\Users\\Public\\Pictures\\output.jpg", ImageFormat.Jpeg);  
                     }
                 }
 
